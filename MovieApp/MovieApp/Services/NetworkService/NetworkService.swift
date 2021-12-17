@@ -21,6 +21,7 @@ protocol NetworkServiceProtocol {
     func getPopularActors(page: Int, completion: @escaping (Result<ActorListResponse, Error>) -> ())
     func getDetailMovie(id: Int, completion: @escaping (Result<DetailMovieModel, Error>) -> ())
     func getMovieImages(movieId: Int, completion: @escaping (Result<MovieImagesResponse, Error>) -> ())
+    func getMovieVideos(movieId: Int, completion: @escaping (Result<VideoResponse, Error>) -> ())
 }
 
 class NetworkService: NetworkServiceProtocol {
@@ -59,7 +60,7 @@ class NetworkService: NetworkServiceProtocol {
     }
     
     func getNewMovies(page: Int, completion: @escaping (Result<MovieListResponse, Error>) -> ()) {
-        sessionRequest(endPoint: .newMoviews(page: page), decodeType: MovieListResponse.self, completion: completion)
+        sessionRequest(endPoint: .newMovies(page: page), decodeType: MovieListResponse.self, completion: completion)
     }
     
     func getPopularActors(page: Int, completion: @escaping (Result<ActorListResponse, Error>) -> ()) {
@@ -71,6 +72,10 @@ class NetworkService: NetworkServiceProtocol {
     }
     
     func getMovieImages(movieId: Int, completion: @escaping (Result<MovieImagesResponse, Error>) -> ()) {
-        sessionRequest(endPoint: .getMoviewImages(movieId: movieId), decodeType: MovieImagesResponse.self, completion: completion)
+        sessionRequest(endPoint: .getMovieImages(movieId: movieId), decodeType: MovieImagesResponse.self, completion: completion)
+    }
+    
+    func getMovieVideos(movieId: Int, completion: @escaping (Result<VideoResponse, Error>) -> ()) {
+        sessionRequest(endPoint: .getMovieVideos(movieId: movieId), decodeType: VideoResponse.self, completion: completion)
     }
 }

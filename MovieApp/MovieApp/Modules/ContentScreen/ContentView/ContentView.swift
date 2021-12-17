@@ -128,6 +128,9 @@ struct ContentView: View {
                 }
             }
         }
+        .alert(isPresented: $viewModel.error.isShown) {
+            Alert(title: Text("Error"), message: Text(viewModel.error.message), dismissButton: .default(Text("Ok")))
+        }
     }
     
     private func loadMovies() {

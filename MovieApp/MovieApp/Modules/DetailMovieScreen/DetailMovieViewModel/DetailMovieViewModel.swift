@@ -11,6 +11,8 @@ class DetailMovieViewModel: ObservableObject {
     
     @Published var detailModel = DetailMovieModel(id: 0, title: "", releaseDate: "", runTime: 0, budget: 0, backdropPath: "", overview: "")
     @Published var movieImages = [MovieImageModel]()
+    @Published var popularActors = [ActorModel]()
+    @Published var error = ErrorView(isShown: false, message: "")
     
     func getDetailMovie(id: Int) {
         NetworkService.shared.getDetailMovie(id: id) { result in
@@ -20,7 +22,9 @@ class DetailMovieViewModel: ObservableObject {
                     self.detailModel = movie
                 }
             case .failure(let error):
-                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.error = ErrorView(isShown: true, message: error.localizedDescription)
+                }
             }
         }
     }
@@ -33,7 +37,24 @@ class DetailMovieViewModel: ObservableObject {
                     self.movieImages = response.backdrops
                 }
             case .failure(let error):
-                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.error = ErrorView(isShown: true, message: error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func getPopularActors() {
+        NetworkService.shared.getPopularActors(page: 1) { result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.popularActors += response.results
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.error = ErrorView(isShown: true, message: error.localizedDescription)
+                }
             }
         }
     }

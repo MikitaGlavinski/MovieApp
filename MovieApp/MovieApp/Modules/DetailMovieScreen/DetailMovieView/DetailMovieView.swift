@@ -13,6 +13,8 @@ struct DetailMovieView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel = DetailMovieViewModel()
     
+    @State private var isVideoPresented = false
+    
     init(movieId: Int) {
         self.movieId = movieId
     }
@@ -25,13 +27,16 @@ struct DetailMovieView: View {
                         MoviePosterView(model: viewModel.detailModel)
                         VStack(spacing: 5) {
                             Button {
-                                //
+                                isVideoPresented.toggle()
                             } label: {
                                 Image(systemName: "play.circle")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .foregroundColor(.yellow)
                                     .frame(width: 70, height: 70)
+                            }
+                            .sheet(isPresented: $isVideoPresented) {
+                                VideoView(movieId: movieId)
                             }
                             Text(viewModel.detailModel.title)
                                 .font(.system(size: 24, weight: .medium, design: .default))
@@ -95,9 +100,23 @@ struct DetailMovieView: View {
                             self.viewModel.getMovieImages(id: self.movieId)
                         }
                     }
+                    Text("CASTS")
+                        .font(.system(size: 15, weight: .semibold, design: .default))
+                        .foregroundColor(.gray)
+                        .frame(width: UIScreen.main.bounds.width, alignment: .leading)
+                        .padding(EdgeInsets(top: 2, leading: 20, bottom: 0, trailing: 0))
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 15) {
+                            ForEach(viewModel.popularActors, id: \.id) { person in
+                                ActorImageView(path: person.photoPath ?? "")
+                            }
+                        }
+                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 40, trailing: 20))
+                    }
                 }
             }
             .onAppear(perform: {
+                self.viewModel.getPopularActors()
                 self.viewModel.getDetailMovie(id: self.movieId)
             })
             .navigationBarHidden(true)
@@ -112,6 +131,9 @@ struct DetailMovieView: View {
                     .foregroundColor(.white)
             }
             .padding(EdgeInsets(top: 15, leading: 20, bottom: 0, trailing: 0))
+        }
+        .alert(isPresented: $viewModel.error.isShown) {
+            Alert(title: Text("Error"), message: Text(viewModel.error.message), dismissButton: .default(Text("Ok")))
         }
     }
 }

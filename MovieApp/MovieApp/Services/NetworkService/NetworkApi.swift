@@ -20,10 +20,11 @@ enum NetworkMovieApi: NetworkApi {
     
     case popularMovies(language: String, page: Int)
     case movieGenres
-    case newMoviews(page: Int)
+    case newMovies(page: Int)
     case getPopularActors(page: Int)
     case getDetailMovie(id: Int)
-    case getMoviewImages(movieId: Int)
+    case getMovieImages(movieId: Int)
+    case getMovieVideos(movieId: Int)
     
     var path: String {
         switch self {
@@ -31,14 +32,16 @@ enum NetworkMovieApi: NetworkApi {
             return "/movie/popular"
         case .movieGenres:
             return "/genre/movie/list"
-        case .newMoviews:
+        case .newMovies:
             return "/movie/now_playing"
         case .getPopularActors:
             return "/person/popular"
         case .getDetailMovie(id: let id):
             return "/movie/\(id)"
-        case .getMoviewImages(movieId: let id):
+        case .getMovieImages(movieId: let id):
             return "/movie/\(id)/images"
+        case .getMovieVideos(movieId: let id):
+            return "/movie/\(id)/videos"
         }
     }
     
@@ -48,13 +51,15 @@ enum NetworkMovieApi: NetworkApi {
             return .get
         case .movieGenres:
             return .get
-        case .newMoviews:
+        case .newMovies:
             return .get
         case .getPopularActors:
             return .get
         case .getDetailMovie:
             return .get
-        case .getMoviewImages:
+        case .getMovieImages:
+            return .get
+        case .getMovieVideos:
             return .get
         }
     }
@@ -65,13 +70,15 @@ enum NetworkMovieApi: NetworkApi {
             return nil
         case .movieGenres:
             return nil
-        case .newMoviews:
+        case .newMovies:
             return nil
         case .getPopularActors:
             return nil
         case .getDetailMovie:
             return nil
-        case .getMoviewImages:
+        case .getMovieImages:
+            return nil
+        case .getMovieVideos:
             return nil
         }
     }
@@ -86,7 +93,7 @@ enum NetworkMovieApi: NetworkApi {
             ]
         case .movieGenres:
             return ["api_key": "de8c410ebd589773b4714db8f59baba3"]
-        case .newMoviews(page: let page):
+        case .newMovies(page: let page):
             return [
                 "api_key": "de8c410ebd589773b4714db8f59baba3",
                 "page": page
@@ -98,7 +105,9 @@ enum NetworkMovieApi: NetworkApi {
             ]
         case .getDetailMovie:
             return ["api_key": "de8c410ebd589773b4714db8f59baba3"]
-        case .getMoviewImages:
+        case .getMovieImages:
+            return ["api_key": "de8c410ebd589773b4714db8f59baba3"]
+        case .getMovieVideos:
             return ["api_key": "de8c410ebd589773b4714db8f59baba3"]
         }
     }
@@ -109,13 +118,15 @@ enum NetworkMovieApi: NetworkApi {
             return nil
         case .movieGenres:
             return nil
-        case .newMoviews:
+        case .newMovies:
             return nil
         case .getPopularActors:
             return nil
         case .getDetailMovie:
             return nil
-        case .getMoviewImages:
+        case .getMovieImages:
+            return nil
+        case .getMovieVideos:
             return nil
         }
         

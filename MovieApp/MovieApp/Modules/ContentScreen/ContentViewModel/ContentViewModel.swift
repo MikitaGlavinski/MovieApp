@@ -15,6 +15,7 @@ class ContentViewModel: ObservableObject {
     @Published var newMovies = [MovieModel]()
     @Published var popularActors = [ActorModel]()
     @Published var isAlreadyShowed = false
+    @Published var error = ErrorView(isShown: false, message: "")
     private var currentPopularPage = 0
     private var currentNewPage = 0
     private var selectedGenreId = 28
@@ -30,7 +31,9 @@ class ContentViewModel: ObservableObject {
                     self.filterByGenre(genreId: self.selectedGenreId)
                 }
             case .failure(let error):
-                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.error = ErrorView(isShown: true, message: error.localizedDescription)
+                }
             }
         }
     }
@@ -43,7 +46,9 @@ class ContentViewModel: ObservableObject {
                     self.movieGenres = response.genres
                 }
             case .failure(let error):
-                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.error = ErrorView(isShown: true, message: error.localizedDescription)
+                }
             }
         }
     }
@@ -62,7 +67,9 @@ class ContentViewModel: ObservableObject {
                     self.newMovies += response.results
                 }
             case .failure(let error):
-                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.error = ErrorView(isShown: true, message: error.localizedDescription)
+                }
             }
         }
     }
@@ -75,7 +82,9 @@ class ContentViewModel: ObservableObject {
                     self.popularActors += response.results
                 }
             case .failure(let error):
-                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.error = ErrorView(isShown: true, message: error.localizedDescription)
+                }
             }
         }
     }
