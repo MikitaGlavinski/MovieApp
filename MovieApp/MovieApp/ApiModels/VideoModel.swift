@@ -27,12 +27,14 @@ struct VideoModel: Codable {
     var name: String
     var key: String
     var type: String
+    var site: String
     
-    init(id: String, name: String, key: String, type: String) {
+    init(id: String, name: String, key: String, type: String, site: String) {
         self.id = id
         self.name = name
         self.key = key
         self.type = type
+        self.site = site
     }
     
     enum CodingKeys: String, CodingKey {
@@ -40,5 +42,6 @@ struct VideoModel: Codable {
         case name = "name"
         case key = "key"
         case type = "type"
+        case site = "site"
     }
 }
