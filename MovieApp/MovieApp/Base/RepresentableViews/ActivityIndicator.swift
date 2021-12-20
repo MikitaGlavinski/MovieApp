@@ -10,7 +10,7 @@ import SwiftUI
 struct ActivityIndicator: UIViewRepresentable {
     
     typealias UIViewType = UIActivityIndicatorView
-    var isAnimating: Bool
+    @Binding var isAnimating: Bool
     
     func makeUIView(context: Context) -> UIActivityIndicatorView {
         let view = UIActivityIndicatorView(style: .large)

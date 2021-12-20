@@ -18,7 +18,7 @@ struct NewPlayingImage: View {
     
     var body: some View {
         ZStack {
-            ActivityIndicator(isAnimating: isLoading)
+            ActivityIndicator(isAnimating: $isLoading)
                 .frame(width: 50, height: 50)
             Image(uiImage: image)
                 .resizable()
@@ -27,6 +27,7 @@ struct NewPlayingImage: View {
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .onReceive(imageLoader.didChange) { data in
                     self.image = UIImage(data: data) ?? UIImage()
+                    self.isLoading = false
                 }
         }
     }
